@@ -33,7 +33,7 @@ public class FilmService {
         Matcher m = p.matcher(s);
 
         if(!m.matches()) {
-            logger.warn("Ignorando ruta {}, motivo: No se ajusta al regex", s);
+            logger.warn("Ignorando ruta {}. MOTIVO: No se ajusta al regex", s);
             return null;
         }
         return new Film(s, m.group(2), Extension.valueOf(m.group(5).toUpperCase()), Integer.parseInt(m.group(3)));

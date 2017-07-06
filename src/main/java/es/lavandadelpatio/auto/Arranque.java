@@ -35,8 +35,8 @@ public class Arranque implements CommandLineRunner{
 
         List<String> args = Arrays.asList(strings);
 
-        if(args.size() == 0){
-            logger.error("Pasa como primer argumento la ruta del archivo que contiene las pelis");
+        if(args.isEmpty()){
+            logger.error("Tienes que pasar como argumento la ruta del archivo txt que contiene los datos de las peliculas. Ejemplo: java -jar programa.jar listapeliculas.txt. Si se pasan varios argumentos seran analizados secuencialmente..");
             SpringApplication.exit(app, () -> -1);
         }
 
@@ -44,15 +44,17 @@ public class Arranque implements CommandLineRunner{
             try(
                     FileReader fr = new FileReader(s);
                     BufferedReader br = new BufferedReader(fr)
-            ){
-                br.lines().forEach(line -> fs.createAndSaveFilm(line));
 
-            } catch(FileNotFoundException e){
-                logger.error("La ruta {} no es una ruta valida", s);
+            ){ br.lines().forEach(line -> fs.createAndSaveFilm(line)); }
+
+            catch(FileNotFoundException e){
+                logger.error("La ruta {} no es una ruta valida. Saltamos a la siguiente.", s);
             } catch(IOException e){
                 logger.error("Error de entrada salida leyendo el archivo {}", s);
             }
         }
+
+        logger.info("Carga de peliculas terminada");
 
     }
 }
