@@ -28,8 +28,7 @@ public class TelegramBotController {
     @Value("${lavanda.webhookToken}")
     private String WEBHOOK_TOKEN;
 
-
-    // Inicializado por initTelegramBotService
+    // Inicializado por initTelegramBotService()
     private String apiURL;
     private String webhookURL;
 

@@ -1,0 +1,36 @@
+package es.lavandadelpatio.auto.TelegramModels;
+
+import javax.persistence.Entity;
+import java.util.Optional;
+
+/**
+ * Created by raulm on 07/07/2017.
+ */
+@Entity
+public class User {
+
+    /**
+     * Unique identifier for this user or bot
+     */
+    int id;
+
+    /**
+     * User‘s or bot’s first name
+     */
+    String first_name;
+
+    /**
+     * User‘s or bot’s last name
+     */
+    Optional<String> last_name;
+
+    /**
+     * User‘s or bot’s username
+     */
+    Optional<String> username;
+
+    /**
+     * IETF language tag of the user's language
+     */
+    Optional<String> language_code;
+}
