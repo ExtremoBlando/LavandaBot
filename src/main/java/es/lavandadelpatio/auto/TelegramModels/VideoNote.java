@@ -5,6 +5,5 @@ import javax.persistence.Entity;
 /**
  * Created by raulm on 08/07/2017.
  */
-@Entity
 public class VideoNote {
 }

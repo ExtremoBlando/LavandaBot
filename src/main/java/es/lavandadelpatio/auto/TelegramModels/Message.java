@@ -1,17 +1,18 @@
 package es.lavandadelpatio.auto.TelegramModels;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Optional;
 
 /**
  * Created by raulm on 07/07/2017.
  */
-@Entity
 public class Message {
 
     /**
      * Unique message identifier inside this chat
      */
+    @Id
     int message_id;
 
     /**
