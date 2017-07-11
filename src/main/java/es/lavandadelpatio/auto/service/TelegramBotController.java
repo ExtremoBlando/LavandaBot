@@ -1,9 +1,10 @@
 package es.lavandadelpatio.auto.service;
 
-import es.lavandadelpatio.auto.TelegramModels.FullUpdate;
+import es.lavandadelpatio.auto.TelegramModels.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +19,10 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("${lavanda.botURL}")
+@ConditionalOnProperty(name="lavanda.useDefaultWebhook", havingValue="true")
 public class TelegramBotController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FilmService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelegramBotController.class);
 
     @Value("${telegram.bot.apiEndpoint}")
     private String API_ENDPOINT;
@@ -43,6 +45,7 @@ public class TelegramBotController {
 
     @PostConstruct
     public void initTelegramBotService(){
+        logger.info("Usando controlador webhook por defecto");
         apiURL = API_ENDPOINT + "/bot" + AUTH_TOKEN + "/";
         webhookURL = HOSTNAME + BOT_URL + WEBHOOK_TOKEN;
         HashMap<String, String> webhookConfig = new HashMap<>();
@@ -51,8 +54,9 @@ public class TelegramBotController {
     }
 
     @RequestMapping("${lavanda.webhookToken}")
-    public void processUpdate(@RequestBody String updates){
-        logger.info("Mensaje recibido de la API de Telegram --> {}", updates);
+    public void processUpdate(@RequestBody Update update){
+        System.out.println((update == null) ?"Es null":"No lo es");
+        logger.info("Mensaje recibido de la API de Telegram --> {}", update);
     }
 
     private void apiCall(String methodName, Map<String, ?> params){
