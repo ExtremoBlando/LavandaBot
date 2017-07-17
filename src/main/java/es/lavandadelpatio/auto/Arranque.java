@@ -1,6 +1,7 @@
 package es.lavandadelpatio.auto;
 
 import es.lavandadelpatio.auto.service.FilmService;
+import es.lavandadelpatio.auto.service.WatsonConversationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class Arranque implements CommandLineRunner{
     @Autowired
     FilmService fs;
 
+    @Autowired
+    WatsonConversationService wcs;
+
     @Override
     public void run(String... strings){
 
@@ -55,6 +59,11 @@ public class Arranque implements CommandLineRunner{
         }
 
         logger.info("Carga de peliculas terminada");
+
+
+        logger.info("Conectando a conversation para entrenar un pokito al bot...");
+        wcs.uploadMovieEntities();
+        logger.info("Entrenamiento finalizado.");
 
     }
 }

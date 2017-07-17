@@ -8,8 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by raulm on 29/06/2017.
@@ -36,12 +39,15 @@ public class FilmService {
             logger.warn("Ignorando ruta {}. MOTIVO: No se ajusta al regex", s);
             return null;
         }
-        return new Film(s, m.group(2), Extension.valueOf(m.group(5).toUpperCase()), Integer.parseInt(m.group(3)));
+        return new Film(s, m.group(2), Extension.valueOf(m.group(5).toUpperCase()), Integer.parseInt(m.group(3)),
+                Arrays.stream(m.group(2).split(" ")).filter(name -> name.length() >= 3).collect(Collectors.toSet()));
     }
 
     public void saveFilm(Film m){
         if(m == null)
             logger.warn("Ignorando pelicula con valor null");
+        else if(m.getName().length() >=64)
+            logger.warn("La pelicula {} tiene mas de 64 caracteres", m.getName());
         else
             fp.save(m);
     }

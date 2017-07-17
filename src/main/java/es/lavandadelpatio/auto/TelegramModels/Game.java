@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javax.persistence.Entity;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,7 +26,7 @@ public class Game {
     /**
      * Photo that will be displayed in the game message in chats.
      */
-    ArrayList<PhotoSize> photo;
+    List<PhotoSize> photo;
 
     /**
      * Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls setGameScore, or manually edited using editMessageText. 0-4096 characters.

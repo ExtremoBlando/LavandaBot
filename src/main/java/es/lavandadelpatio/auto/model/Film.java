@@ -3,6 +3,10 @@ package es.lavandadelpatio.auto.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by raulm on 29/06/2017.
@@ -22,8 +26,13 @@ public class Film {
 
     private int year;
 
+    @OneToMany
+    Set<String> sinonimos;
+
     /*@ElementCollection
     private Set<Attr> atributos = new HashSet<>();*/
+
+    protected Film(){}
 
     public Film(String longName, String name, Extension ext) {
         this.longName = longName;
@@ -41,6 +50,14 @@ public class Film {
         this.ext = ext;
         this.name = name;
         this.year = year;
+    }
+
+    public Film(String longName, String name, Extension ext, int year, Collection<String> sinonimos) {
+        this.longName = longName;
+        this.ext = ext;
+        this.name = name;
+        this.year = year;
+        this.sinonimos = new HashSet<>(sinonimos);
     }
 
 
