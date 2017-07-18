@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -25,6 +26,8 @@ public class FilmService {
 
     private static final Logger logger = LoggerFactory.getLogger(FilmService.class);
 
+    private final Set<String> nombresPeliculas = new HashSet<>();
+
     /**
      * La forma mas facil de extraer la info que necesitamos de cada linea, es primero, comprobar si el string
      * se ajusta a la expresion regular, y segundo, si se ajusta, extraer los datos mediante los grupos.
@@ -39,20 +42,38 @@ public class FilmService {
             logger.warn("Ignorando ruta {}. MOTIVO: No se ajusta al regex", s);
             return null;
         }
-        return new Film(s, m.group(2), Extension.valueOf(m.group(5).toUpperCase()), Integer.parseInt(m.group(3)),
-                Arrays.stream(m.group(2).split(" ")).filter(name -> name.length() >= 3).collect(Collectors.toSet()));
+
+        String shortName = m.group(2).trim().replace(" ", "-");
+        if(shortName.length()>64)
+            shortName = shortName.substring(0, 64);
+
+        if(nombresPeliculas.contains(shortName)) {
+            logger.warn("Ignorando  pelicula {}. MOTIVO: DUPLICADO", s);
+            return null;
+        }
+        nombresPeliculas.add(shortName);
+
+        return new Film(
+                s,
+                shortName,
+                Extension.valueOf(m.group(5).toUpperCase()),
+                Integer.parseInt(m.group(3)),
+                Arrays.stream(m.group(2).split(" ")).filter(name -> name.length() >= 3).map(String::toLowerCase).collect(Collectors.toSet())
+        );
     }
 
     public void saveFilm(Film m){
         if(m == null)
             logger.warn("Ignorando pelicula con valor null");
-        else if(m.getName().length() >=64)
-            logger.warn("La pelicula {} tiene mas de 64 caracteres", m.getName());
+        //else if(m.getName().length() >=64)
+        //    logger.warn("La pelicula {} tiene mas de 64 caracteres", m.getName());
         else
             fp.save(m);
     }
 
     public void createAndSaveFilm(String s){
-        saveFilm(createFilm(s));
+        Film film = createFilm(s);
+        if(s != null)
+            saveFilm(film);
     }
 }

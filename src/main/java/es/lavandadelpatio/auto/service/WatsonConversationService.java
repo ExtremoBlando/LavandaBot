@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by raulm on 14/07/2017.
@@ -28,14 +29,17 @@ public class WatsonConversationService {
 
     public static final String API_VERSION = "2017-05-26";
 
-    @Value("${watson.username}")
+    @Value("${watson.conversation.username}")
     private String username;
 
-    @Value("${watson.password}")
+    @Value("${watson.conversation.password}")
     private String password;
 
-    @Value("${watson.workspaceid}")
+    @Value("${watson.conversation.workspaceid}")
     private String workspace;
+
+    @Value("${watson.conversation.apiEndpoint}")
+    private String apiEndpoint;
 
     ConversationService service;
 
@@ -48,6 +52,10 @@ public class WatsonConversationService {
     public void initializeWatsonAPI(){
         service = new ConversationService(ConversationService.VERSION_DATE_2017_04_21);
         service.setUsernameAndPassword(username, password);
+        service.setEndPoint(apiEndpoint);
+        logger.info("Api endpoint {}", apiEndpoint);
+        logger.info("User {}", username);
+        logger.info("Password {}", password);
     }
 
     public List<String> getResponseForMessage(String message){
@@ -66,7 +74,7 @@ public class WatsonConversationService {
 
         CreateEntityOptions.Builder ceob = new CreateEntityOptions.Builder(workspace, "Pelicula");
 
-        filmRepository.findAll().forEach(p -> ceob.addValue(new CreateValue.Builder(p.getName()).build()));
+        filmRepository.findAll().forEach(p -> ceob.addValue(new CreateValue.Builder(p.getName()).synonyms(p.getSinonimos()).build()));
 
         service.createEntity(ceob.build()).execute();
     }
