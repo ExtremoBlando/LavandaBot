@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -27,6 +28,10 @@ public class FilmService {
     private static final Logger logger = LoggerFactory.getLogger(FilmService.class);
 
     private final Set<String> nombresPeliculas = new HashSet<>();
+
+    private final Set<String> listaExclusion = new HashSet<>(Arrays.asList(("un una unos unas el la los las a con " +
+            "cual cuan de del en entre para por so tras al de a algo mas asi aun a ir me tu muy nada ni no nos os " +
+            "por qué que si sí sin sino tan te ti tú tu tus y yo ya").split(" ")));
 
     /**
      * La forma mas facil de extraer la info que necesitamos de cada linea, es primero, comprobar si el string
@@ -53,12 +58,15 @@ public class FilmService {
         }
         nombresPeliculas.add(shortName);
 
+        Predicate<String> palabraEnListaExclusion = listaExclusion::contains;
+        Predicate<String> noIgnorar = palabraEnListaExclusion.or(String::isEmpty).negate();
+
         return new Film(
                 s,
                 shortName,
                 Extension.valueOf(m.group(5).toUpperCase()),
                 Integer.parseInt(m.group(3)),
-                Arrays.stream(m.group(2).split(" ")).filter(name -> name.length() >= 3).map(String::toLowerCase).collect(Collectors.toSet())
+                Arrays.stream(m.group(2).replace("/\\(|\\:|\\)/g", "").split(" ")).map(String::toLowerCase).map(String::trim).filter(noIgnorar).collect(Collectors.toSet())
         );
     }
 
