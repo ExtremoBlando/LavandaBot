@@ -1,7 +1,5 @@
 package es.lavandadelpatio.auto.TelegramModels;
 
-import javafx.animation.Animation;
-
 import java.util.List;
 import java.util.Optional;
 

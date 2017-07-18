@@ -72,7 +72,7 @@
 		<!-- IBM Watson JDK -->
         <dependency>
             <groupId>com.ibm.watson.developer_cloud</groupId>
-            <artifactId>conversation</artifactId>
+            <artifactId>java-sdk</artifactId>
             <version>3.8.1-SNAPSHOT</version>
         </dependency>
 
