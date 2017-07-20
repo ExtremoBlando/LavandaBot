@@ -8,8 +8,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 
-    public String processMessage(String message, String sender){
+    public String processMessage(String message){
+
+        if(message.startsWith("/"))
+            return executeCommand(message);
+
+        return sendToWatson(message);
 
         return "Hola caracola";
+    }
+
+    private String executeCommand(String command){
+
+    }
+
+    private String sendToWatson(String message){
+
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by raulm on 14/07/2017.
@@ -53,9 +53,10 @@ public class WatsonConversationService {
         service = new ConversationService(ConversationService.VERSION_DATE_2017_04_21);
         service.setUsernameAndPassword(username, password);
         service.setEndPoint(apiEndpoint);
-        logger.info("Api endpoint {}", apiEndpoint);
-        logger.info("User {}", username);
-        logger.info("Password {}", password);
+
+        //HashMap<String, String> defaultHeaders = new HashMap<>();
+        //defaultHeaders.put("Content-Type", "application/json; charset=utf-8");
+        //service.setDefaultHeaders(defaultHeaders);
     }
 
     public List<String> getResponseForMessage(String message){
@@ -77,5 +78,13 @@ public class WatsonConversationService {
         filmRepository.findAll().forEach(p -> ceob.addValue(new CreateValue.Builder(p.getName()).synonyms(p.getSinonimos()).build()));
 
         service.createEntity(ceob.build()).execute();
+    }
+
+    public MessageResponse sendMessage(String message){
+        MessageRequest newMessage = new MessageRequest.Builder().inputText(message).build();
+        return service.message(workspace, newMessage).execute();
+        //InputData input = new InputData.Builder("Hi").build();
+        //MessageOptions options = new MessageOptions.Builder(workspaceId).input(input).build();
+       //MessageResponse response = service.message(options).execute();
     }
 }

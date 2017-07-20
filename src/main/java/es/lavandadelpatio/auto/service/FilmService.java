@@ -31,7 +31,7 @@ public class FilmService {
 
     private final Set<String> listaExclusion = new HashSet<>(Arrays.asList(("un una unos unas el la los las a con " +
             "cual cuan de del en entre para por so tras al de a algo mas asi aun a ir me tu muy nada ni no nos os " +
-            "por qué que si sí sin sino tan te ti tú tu tus y yo ya").split(" ")));
+            "por qué que si sí sin sino tan te ti tú tu tus y yo ya mas más no como cómo porque porqué").split(" ")));
 
     /**
      * La forma mas facil de extraer la info que necesitamos de cada linea, es primero, comprobar si el string
@@ -66,7 +66,11 @@ public class FilmService {
                 shortName,
                 Extension.valueOf(m.group(5).toUpperCase()),
                 Integer.parseInt(m.group(3)),
-                Arrays.stream(m.group(2).replace("/\\(|\\:|\\)/g", "").split(" ")).map(String::toLowerCase).map(String::trim).filter(noIgnorar).collect(Collectors.toSet())
+                Arrays.stream(m.group(2).replace("(", "").replace(")", "")
+                        .replace(":", "").replace(".", "")
+                        .replace(",", "").replace("!", "")
+                        .replace("-", "").replace("&", "")
+                                .split(" ")).map(String::toLowerCase).map(String::trim).filter(noIgnorar).collect(Collectors.toSet())
         );
     }
 
