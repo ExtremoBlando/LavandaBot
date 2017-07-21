@@ -29,9 +29,10 @@ public class FilmService {
 
     private final Set<String> nombresPeliculas = new HashSet<>();
 
-    private final Set<String> listaExclusion = new HashSet<>(Arrays.asList(("un una unos unas el la los las a con " +
+    private final Set<String> listaExclusion = new HashSet<>(Arrays.asList(("un una unos unas el él la los las a con " +
             "cual cuan de del en entre para por so tras al de a algo mas asi aun a ir me tu muy nada ni no nos os " +
-            "por qué que si sí sin sino tan te ti tú tu tus y yo ya mas más no como cómo porque porqué").split(" ")));
+            "por qué que si sí sin sino tan te ti tú tu tus y yo ya mas más no como cómo porque porqué" +
+            "película pelicula películas peliculas peli serie dibujos").split(" ")));
 
     /**
      * La forma mas facil de extraer la info que necesitamos de cada linea, es primero, comprobar si el string
@@ -70,7 +71,7 @@ public class FilmService {
                         .replace(":", "").replace(".", "")
                         .replace(",", "").replace("!", "")
                         .replace("-", "").replace("&", "")
-                                .split(" ")).map(String::toLowerCase).map(String::trim).filter(noIgnorar).collect(Collectors.toSet())
+                        .split(" ")).map(String::toLowerCase).map(String::trim).filter(noIgnorar).collect(Collectors.toSet())
         );
     }
 

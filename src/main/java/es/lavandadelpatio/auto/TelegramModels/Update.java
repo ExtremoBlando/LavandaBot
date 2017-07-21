@@ -139,7 +139,7 @@ public class Update {
     }
 
     // TODO: Message optionality
-    public String toString(){
+/*    public String toString(){
         if(this.message.isPresent())
             return "Tiene mensaje";
         if(this.callback_query.isPresent())
@@ -159,6 +159,6 @@ public class Update {
         if(this.shipping_query.isPresent())
             return "Shipping Query";
         return "Me cago en tus muertos";
-    }
+    }*/
 }
 

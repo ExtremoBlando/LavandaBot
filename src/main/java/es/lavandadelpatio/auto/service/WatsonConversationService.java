@@ -1,10 +1,8 @@
 package es.lavandadelpatio.auto.service;
 
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
-import com.ibm.watson.developer_cloud.conversation.v1.model.CreateEntityOptions;
-import com.ibm.watson.developer_cloud.conversation.v1.model.CreateValue;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.ibm.watson.developer_cloud.conversation.v1.model.*;
+import com.ibm.watson.developer_cloud.http.ServiceCall;
 import es.lavandadelpatio.auto.FilmRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raulm on 14/07/2017.
@@ -59,32 +58,24 @@ public class WatsonConversationService {
         //service.setDefaultHeaders(defaultHeaders);
     }
 
-    public List<String> getResponseForMessage(String message){
-
-        MessageResponse response = service.message(
-                workspace,
-                new MessageRequest.Builder().inputText(message).build()
-        ).execute();
-
-        //TODO: Save context
-
-        return response.getText();
-    }
-
     public void uploadMovieEntities(){
 
         CreateEntityOptions.Builder ceob = new CreateEntityOptions.Builder(workspace, "Pelicula");
 
+        //EntityExportResponse geo = service.getEntity(new GetEntityOptions.Builder(workspace, "Pelicula").build()).execute();
+        logger.info("Eliminando entidad Pelioula para reconstruirla....");
+        service.deleteEntity(new DeleteEntityOptions.Builder(workspace, "Pelicula").build()).execute();
+        logger.info("Entidad pelicula eliminada, reconstruyendo...");
         filmRepository.findAll().forEach(p -> ceob.addValue(new CreateValue.Builder(p.getName()).synonyms(p.getSinonimos()).build()));
-
         service.createEntity(ceob.build()).execute();
+        logger.info("Entidad pelicula actualizada con exito");
     }
 
-    public MessageResponse sendMessage(String message){
-        MessageRequest newMessage = new MessageRequest.Builder().inputText(message).build();
+    public MessageResponse sendMessage(String message, Map<String, Object> context){
+        MessageRequest newMessage = new MessageRequest.Builder().inputText(message).context(context).build();
         return service.message(workspace, newMessage).execute();
         //InputData input = new InputData.Builder("Hi").build();
         //MessageOptions options = new MessageOptions.Builder(workspaceId).input(input).build();
-       //MessageResponse response = service.message(options).execute();
+        //MessageResponse response = service.message(options).execute();
     }
 }

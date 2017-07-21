@@ -18,7 +18,7 @@ public class Message {
     /**
      * Sender, can be empty for messages sent to channels
      */
-    User from;
+    Optional<User> from;
 
     /**
      *  Date the message was sent in Unix time
@@ -210,5 +210,157 @@ public class Message {
      * Message is a service message about a successful payment, information about the payment.
      */
     Optional<SuccessfulPayment> successful_payment;
+
+    public int getMessage_id() {
+        return message_id;
+    }
+
+    public Optional<User> getFrom() {
+        return from;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public Optional<User> getForward_from() {
+        return forward_from;
+    }
+
+    public Optional<Chat> getForward_from_chat() {
+        return forward_from_chat;
+    }
+
+    public Optional<Integer> getForward_from_message_id() {
+        return forward_from_message_id;
+    }
+
+    public Optional<Integer> getForward_date() {
+        return forward_date;
+    }
+
+    public Optional<Integer> getEdit_date() {
+        return edit_date;
+    }
+
+    public Optional<Message> getReply_to_message() {
+        return reply_to_message;
+    }
+
+    public Optional<String> getText() {
+        return text;
+    }
+
+    public Optional<MessageEntity[]> getEntities() {
+        return entities;
+    }
+
+    public Optional<Audio> getAudio() {
+        return audio;
+    }
+
+    public Optional<Document> getDocument() {
+        return document;
+    }
+
+    public Optional<Game> getGame() {
+        return game;
+    }
+
+    public Optional<PhotoSize[]> getPhoto() {
+        return photo;
+    }
+
+    public Optional<Sticker> getSticker() {
+        return sticker;
+    }
+
+    public Optional<Video> getVideo() {
+        return video;
+    }
+
+    public Optional<Voice> getVoice() {
+        return voice;
+    }
+
+    public Optional<VideoNote> getVideo_note() {
+        return video_note;
+    }
+
+    public Optional<User[]> getNew_chat_members() {
+        return new_chat_members;
+    }
+
+    public Optional<String> getCaption() {
+        return caption;
+    }
+
+    public Optional<Contact> getContact() {
+        return contact;
+    }
+
+    public Optional<Location> getLocation() {
+        return location;
+    }
+
+    public Optional<Venue> getVenue() {
+        return venue;
+    }
+
+    public Optional<User> getNew_chat_member() {
+        return new_chat_member;
+    }
+
+    public Optional<User> getLeft_chat_member() {
+        return left_chat_member;
+    }
+
+    public Optional<String> getNew_chat_title() {
+        return new_chat_title;
+    }
+
+    public Optional<PhotoSize[]> getNew_chat_photo() {
+        return new_chat_photo;
+    }
+
+    public Optional<Boolean> getDelete_chat_photo() {
+        return delete_chat_photo;
+    }
+
+    public Optional<Boolean> getGroup_chat_created() {
+        return group_chat_created;
+    }
+
+    public Optional<Boolean> getSupergroup_chat_created() {
+        return supergroup_chat_created;
+    }
+
+    public Optional<Boolean> getChannel_chat_created() {
+        return channel_chat_created;
+    }
+
+    public Optional<Long> getMigrate_to_chat_id() {
+        return migrate_to_chat_id;
+    }
+
+    public Optional<Long> getMigrate_from_chat_id() {
+        return migrate_from_chat_id;
+    }
+
+    public Optional<Message> getPinned_message() {
+        return pinned_message;
+    }
+
+    public Optional<Invoice> getInvoice() {
+        return invoice;
+    }
+
+    public Optional<SuccessfulPayment> getSuccessful_payment() {
+        return successful_payment;
+    }
 }
 

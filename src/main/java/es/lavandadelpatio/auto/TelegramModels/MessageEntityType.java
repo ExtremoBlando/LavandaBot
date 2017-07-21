@@ -15,7 +15,7 @@ public enum MessageEntityType {
 
     @JsonProperty("bot_command") BOT_COMMAND,
 
-    @JsonProperty("utl") URL,
+    @JsonProperty("url") URL,
 
     @JsonProperty("email") EMAIL,
 
