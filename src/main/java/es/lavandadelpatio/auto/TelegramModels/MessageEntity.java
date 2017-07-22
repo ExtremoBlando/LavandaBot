@@ -33,4 +33,23 @@ public class MessageEntity {
      */
     Optional<User> user;
 
+    public MessageEntityType getType() {
+        return type;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public Optional<String> getUrl() {
+        return url;
+    }
+
+    public Optional<User> getUser() {
+        return user;
+    }
 }

@@ -60,4 +60,44 @@ public class Chat {
      * Chat photo. Returned only in getChat.
      */
     private Optional<ChatPhoto> photo;
+
+    public long getId() {
+        return id;
+    }
+
+    public ChatType getType() {
+        return type;
+    }
+
+    public Optional<String> getTitle() {
+        return title;
+    }
+
+    public Optional<String> getUsername() {
+        return username;
+    }
+
+    public Optional<String> getFirst_name() {
+        return first_name;
+    }
+
+    public Optional<String> getLast_name() {
+        return last_name;
+    }
+
+    public Optional<String> getDescription() {
+        return description;
+    }
+
+    public Optional<String> getInvite_link() {
+        return invite_link;
+    }
+
+    public Optional<Boolean> getAll_members_are_administrators() {
+        return all_members_are_administrators;
+    }
+
+    public Optional<ChatPhoto> getPhoto() {
+        return photo;
+    }
 }

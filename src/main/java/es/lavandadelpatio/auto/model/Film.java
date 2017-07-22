@@ -1,8 +1,8 @@
 package es.lavandadelpatio.auto.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Created by raulm on 29/06/2017.
@@ -18,12 +18,18 @@ public class Film {
 
     private Extension ext;
 
+    @Column(unique=true)
     private String name;
 
     private int year;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    Set<String> sinonimos;
+
     /*@ElementCollection
     private Set<Attr> atributos = new HashSet<>();*/
+
+    protected Film(){}
 
     public Film(String longName, String name, Extension ext) {
         this.longName = longName;
@@ -41,6 +47,14 @@ public class Film {
         this.ext = ext;
         this.name = name;
         this.year = year;
+    }
+
+    public Film(String longName, String name, Extension ext, int year, Collection<String> sinonimos) {
+        this.longName = longName;
+        this.ext = ext;
+        this.name = name;
+        this.year = year;
+        this.sinonimos = new HashSet<>(sinonimos);
     }
 
 
@@ -89,5 +103,11 @@ public class Film {
         this.atributos.add(attr);
     }*/
 
+    public List<String> getSinonimos() {
+        return new ArrayList<>(this.sinonimos);
+    }
 
+    public void setSinonimos(Set<String> sinonimos) {
+        this.sinonimos = sinonimos;
+    }
 }
