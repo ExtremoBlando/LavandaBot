@@ -1,5 +1,7 @@
 package es.lavandadelpatio.auto.service;
 
+import com.ibm.watson.developer_cloud.conversation.v1.model.Entity;
+import com.ibm.watson.developer_cloud.conversation.v1.model.Intent;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
 import es.lavandadelpatio.auto.TelegramModels.Message;
 import es.lavandadelpatio.auto.TelegramModels.User;
@@ -20,11 +22,15 @@ public class MessageService {
 
     private static final String REEMPLAZAR_POR_USER = "{}";
 
-    private static final Logger logger = LoggerFactory.getLogger(TelegramBotController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
     Map<Long, Map<String, Object>> contextData = new HashMap<>();
 
     Set<String> listaConfianza = new HashSet<>(Arrays.asList("54567045"));
+
+    // Para debug
+    List<Entity> entidades =  new ArrayList<>();
+    List<Intent> intenciones = new ArrayList<>();
 
     @Autowired
     WatsonConversationService wcs;
@@ -49,6 +55,8 @@ public class MessageService {
     }
 
     private String processAsCommand(String[] params, Message message){
+
+        StringBuilder sb;
         switch(params[0]){
 
             case "ayuda":
@@ -73,6 +81,16 @@ public class MessageService {
             case "ping":
                 return "pong";
 
+            case "entidades":
+                sb = new StringBuilder().append("Posibles entidades detectadas en el ultimo mensaje: ");
+                entidades.forEach(e -> sb.append(e.getEntity()).append(":").append(e.getValue()).append(" "));
+                return sb.toString();
+
+            case "intenciones":
+                sb = new StringBuilder().append("Intenciones del ultimo mensaje: ");
+                intenciones.forEach(i -> sb.append(i.getIntent()).append(" - ").append(i.getConfidence()).append(" "));
+                return sb.toString();
+
             default:
                 return "Comando no reconocido, para ver la lista de comandos pon /ayuda";
         }
@@ -88,9 +106,40 @@ public class MessageService {
 
         MessageResponse mr = wcs.sendMessage(message, getContextData(id));
 
-        // TODO utilizar las entidades que reconoce, etc.
+        entidades = mr.getEntities();
+        intenciones = mr.getIntents();
+
+        //logger.info("Entidades: {}, Intenciones: {}", entidades, intenciones);
+
         saveContextData(mr.getContext(), id);
+
+        if(mr.getText().isEmpty())
+            return generateResponse(mr);
+
         return String.join("\n", mr.getText());
+    }
+
+    /**
+     * Genera la respuesta si Watson no lo ha hecho.
+     * @param mr
+     * @return
+     */
+    private String generateResponse(MessageResponse mr) {
+
+        if(mr.getIntents().isEmpty())
+            throw new IllegalArgumentException("Cannot generate the response without intent data");
+
+
+        switch (mr.getIntents().get(0).getIntent()){
+
+            case "pregunta":
+
+                return "";
+
+            default:
+                return "No implementado";
+
+        }
     }
 
     private void saveContextData(Map<String, Object> context, long id){
