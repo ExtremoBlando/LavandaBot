@@ -70,6 +70,9 @@ public class MessageService {
             case "getId":
                 return "Tu codigo de usuario es :" +Long.toString(message.getFrom().get().getId());
 
+            case "ping":
+                return "pong";
+
             default:
                 return "Comando no reconocido, para ver la lista de comandos pon /ayuda";
         }

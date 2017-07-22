@@ -63,7 +63,8 @@ public class TelegramBotController {
     public void processUpdate(@RequestBody Update update){
         logger.info("Mensaje recibido de la API de Telegram --> {}", update);
 
-        if(!update.getMessage().isPresent()){
+        // Revisar compatibilidad de Jackson con Optional<>, sin el null check da npe
+        if(update.getMessage() == null || !update.getMessage().isPresent()){
             logger.info("No es un mensaje, ignoramos update");
             return;
         }
